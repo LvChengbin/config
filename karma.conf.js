@@ -2,10 +2,26 @@
 // Generated on Tue Jul 11 2017 12:49:06 GMT+0800 (CST)
 
 process.env.CHROME_BIN = require( 'puppeteer' ).executablePath();
-
+const argv = require( 'optimist' ).argv;
 const resolve = require( 'rollup-plugin-node-resolve' );
+const buble = require( 'rollup-plugin-buble' );
 
-//const babel = require( 'rollup-plugin-babel' );
+const rollupPlugins = [
+    resolve( {
+        module : true,
+        jsnext : true
+    } ),
+];
+
+if( argv.es5 ) {
+    rollupPlugins.push(
+        buble( {
+            transforms : {
+                dangerousForOf : true
+            }
+        } )
+    );
+}
 
 module.exports = function(config) {
     config.set({
@@ -22,11 +38,41 @@ module.exports = function(config) {
 
 
         // list of files / patterns to load in the browser
-        files : [
-            'test/main.js',
-            { pattern : 'src/**/*.js', included : false, watched : false },
-            { pattern : 'test/**/*.spec.js', included : true, watched : false }
+        files : ( () => {
+            const files = [
+                { pattern : 'src/**/*.js', included : false, watched : false }
+            ];
+
+            if( argv.file || argv.files ) {
+                argv.file && files.push( {
+                    pattern : argv.file.trim(),
+                    included : true,
+                    watched : false
+                } );
+
+                argv.files && argv.files.split( ',' ).forEach( file => {
+                    files.push( {
+                        pattern : file.trim(),
+                        included : true,
+                        watched : false
+                    } );
+                } );
+            } else {
+                files.push( {
+                    pattern : 'test/**/*.spec.js',
+                    included : true,
+                    watched : false
+                } );
+            }
+
+            return files;
+        } )(),
+
+        // list of files to exclude
+        exclude : [
+            'test/server/**/*.js'
         ],
+
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
@@ -36,12 +82,7 @@ module.exports = function(config) {
 
         // 
         rollupPreprocessor : {
-            plugins : [
-                resolve( {
-                    module : true,
-                    jsnext : true
-                } )
-            ],
+            plugins : rollupPlugins,
             output : {
                 format : 'iife'
             }
@@ -67,7 +108,11 @@ module.exports = function(config) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: [ 'ChromeHeadless' ], //PhantomJS
+        browsers: [ 'ChromeHeadless' ],
+
+        client : {
+            captureConsole : true
+        },
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits

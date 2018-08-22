@@ -49,7 +49,12 @@ class Config {
         let tmp = this.config;
 
         for( let item of path.split( '.' ) ) {
-            if( typeof ( tmp = tmp[ item ] ) === 'undefined' ) break;
+            try { 
+                tmp = tmp[ item ];
+            } catch( e ) { 
+                tmp = undefined;
+            }
+            if( typeof tmp === 'undefined' ) break;
         }
 
         if( isUndefined( tmp ) ) {

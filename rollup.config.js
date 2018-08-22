@@ -1,5 +1,5 @@
-import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
+import buble from 'rollup-plugin-buble';
 
 export default [ {
     input : 'src/config.js',
@@ -20,7 +20,11 @@ export default [ {
             module : true,
             jsnext : true
         } ),
-        babel()
+        buble( {
+            transforms : {
+                dangerousForOf : true
+            }
+        } )
     ],
     output : [
         { file : 'dist/config.bc.js', format : 'umd', name : 'Config' }

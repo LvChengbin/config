@@ -1,21 +1,23 @@
 import Config from '../src/config';
 
-const config = new Config( {
-    debugging : false,
-    script : {
-        external : false,
-        localcache : {
-            set : {
-                page : true,
-                persistent : {
-                    md5 : true,
-                    cookie : true
-                },
-                priority : 51
+function _config() {
+    return new Config( {
+        debugging : false,
+        script : {
+            external : false,
+            localcache : {
+                set : {
+                    page : true,
+                    persistent : {
+                        md5 : true,
+                        cookie : true
+                    },
+                    priority : 51
+                }
             }
         }
-    }
-} );
+    } );
+}
 
 describe( 'Config', () => {
 
@@ -25,11 +27,12 @@ describe( 'Config', () => {
         } ).toThrow( new TypeError( 'Expect an Object for default config value.' ) );
 
         expect( () => {
-            config.set( [] ); 
+            _config().set( [] ); 
         } ).toThrow( new TypeError( 'Expect an Object for default config value.' ) );
     } );
 
-    it( 'get exitent value', () => {
+    it( 'get existing value', () => {
+        const config = _config();
         expect( config.get( 'debugging' ) ).toBeFalsy( );
         expect( config.get( 'script.external' ) ).toBeFalsy();
         expect( config.get( 'script.localcache.set.persistent' ) ).toEqual( {
@@ -38,13 +41,15 @@ describe( 'Config', () => {
         } );
     } );
 
-    it( 'get nonexistent value', () => {
+    it( 'get nonexisting value', () => {
+        const config = _config();
         expect( config.get( 'xxx' ) ).toEqual( undefined );
         expect( config.get( 'script.xxx' ) ).toEqual( undefined );
         expect( config.get( 'xxx', 'abc' ) ).toEqual( 'abc' );
     } );
 
     it( 'set value', () => {
+        const config = _config();
         config.set( 'debugging', true );
         config.set( 'script.external', true );
         config.set( 'script.localcache.set.persistent', { lifetime : 1000 } );
@@ -53,7 +58,8 @@ describe( 'Config', () => {
         expect( config.get( 'script.localcache.set.persistent' ) ).toEqual( { lifetime : 1000 } );
     } );
 
-    it( 'set value with nonexistent path', () => {
+    it( 'set value with nonexisting path', () => {
+        const config = _config();
         config.set( 'test', '100' );
         config.set( 'a.b.c', '100' );
         expect( config.get( 'test' ) ).toEqual( '100' );
@@ -61,8 +67,17 @@ describe( 'Config', () => {
     } );
 
     it( 'replace whole value', () => {
+        const config = _config();
         config.set( { test : '123' } );
         expect( config.get() ).toEqual( { test : '123' } );
+    } );
+
+    it( 'should have gotten "undefined"', () => {
+        const config = new Config( {
+            x : null
+        } );
+        expect( config.get( 'x.a.b.c' ) ).toEqual( undefined );
+        expect( config.get( 'a' ) ).toEqual( undefined );
     } );
 
 } );

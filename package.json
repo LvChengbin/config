@@ -1,49 +1,47 @@
 {
-  "name": "@lvchengbin/config",
-  "version": "0.0.0",
-  "description": "",
-  "keywords": [
-      "config",
-      "settings"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:LvChengbin/config.git"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.39",
-    "@babel/core": "^7.0.0-beta.39",
-    "@babel/preset-env": "^7.0.0-beta.39",
-    "eslint": "^4.15.0",
-    "jasmine-core": "^2.8.0",
-    "karma": "^2.0.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.1",
-    "karma-rollup-preprocessor": "^5.0.2",
-    "optimist": "^0.6.1",
-    "pre-commit": "^1.2.2",
-    "puppeteer": "^1.0.0",
-    "rollup": "^0.53.3",
-    "rollup-plugin-babel": "^4.0.0-beta.0",
-    "rollup-plugin-commonjs": "^8.3.0",
-    "rollup-plugin-node-resolve": "^3.0.2"
-  },
-  "scripts": {
-    "build": "rollup -c",
-    "test": "karma start",
-    "prepublish": "npm run build",
-    "lint": "eslint ./ --cache --ignore-path .eslintignore",
-    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
-  },
-  "pre-commit": [
-    "precommit-msg",
-    "lint"
-  ],
-  "main": "dist/config.cjs.js",
-  "jsnext:main": "src/config.js",
-  "author": "LvChengbin",
-  "license": "MIT",
-  "dependencies": {
-    "@lvchengbin/is": "0.0.9"
-  }
+    "name": "@lvchengbin/config",
+    "version": "0.0.1",
+    "description": "",
+    "keywords": [
+        "config",
+        "settings"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:LvChengbin/config.git"
+    },
+    "devDependencies": {
+        "buble": "^0.19.3",
+        "eslint": "^5.4.0",
+        "jasmine-core": "^3.2.1",
+        "karma": "^3.0.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-jasmine": "^1.1.2",
+        "karma-rollup-preprocessor": "^6.0.1",
+        "optimist": "^0.6.1",
+        "pre-commit": "^1.2.2",
+        "puppeteer": "^1.7.0",
+        "rollup": "^0.64.1",
+        "rollup-plugin-buble": "^0.19.2",
+        "rollup-plugin-node-resolve": "^3.3.0"
+    },
+    "scripts": {
+        "build": "rollup -c",
+        "test": "karma start",
+        "test-es5": "karma start --es5=true",
+        "prepublish": "npm run build",
+        "lint": "eslint ./ --cache --ignore-path .eslintignore",
+        "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
+    },
+    "pre-commit": [
+        "precommit-msg",
+        "lint"
+    ],
+    "main": "dist/config.cjs.js",
+    "jsnext:main": "src/config.js",
+    "author": "LvChengbin",
+    "license": "MIT",
+    "dependencies": {
+        "@lvchengbin/is": "0.0.18"
+    }
 }
