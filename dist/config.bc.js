@@ -13,6 +13,7 @@
     var Config = function Config( config ) {
         if ( config === void 0 ) config = {};
 
+        if( config instanceof  Config ) { return config; }
         if( !isObject( config ) ) {
             throw new TypeError( 'Expect an Object for default config value.' );
         }

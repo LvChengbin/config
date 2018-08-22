@@ -3,6 +3,7 @@ import isObject from '@lvchengbin/is/src/object';
 
 class Config {
     constructor( config = {} ) {
+        if( config instanceof  Config ) return config;
         if( !isObject( config ) ) {
             throw new TypeError( 'Expect an Object for default config value.' );
         }
