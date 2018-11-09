@@ -1,5 +1,7 @@
 # Config
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/LvChengbin/config.svg)](https://greenkeeper.io/)
+
 A simple library for creating and managing config object.
 
 ## Start
